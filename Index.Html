@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Harvey Sanabria · Full-Stack Digital Studio</title>
+<meta name="description" content="Estudio de productos digitales: Web, Apps, E-learning, Metaverso, Juegos serios, UX/UI. Bogotá, Colombia.">
+<style>
+  :root{
+    /* Nueva paleta (no negra): índigo + jade + marfil */
+    --bg: #0f1221;
+    --panel: #171a2e;
+    --ink: #eef2ff;
+    --muted: #9aa3c7;
+    --brand: #6ee7c8;      /* jade claro */
+    --brand-2:#8b5cf6;     /* índigo/lila */
+    --accent:#22d3ee;      /* cian */
+    --warning:#ffd166;
+    --ok:#34d399;
+    --danger:#fb7185;
+    --border:#242846;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --maxw: 1180px;
+    --speed: .25s;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background: radial-gradient(1200px 600px at 20% -10%, rgba(139,92,246,.15), transparent 60%),
+                radial-gradient(1000px 600px at 100% 20%, rgba(34,211,238,.12), transparent 60%),
+                var(--bg);
+    color:var(--ink);
+    font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+  }
+  a{color:var(--brand);text-decoration:none}
+  a:hover{opacity:.9}
+
+  /* Header */
+  header{
+    position:sticky; top:0; z-index:10;
+    backdrop-filter: blur(8px);
+    background: rgba(15,18,33,.6);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{
+    max-width:var(--maxw); margin:auto; padding:12px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px
+  }
+  .logo-badge{
+    width:32px; height:32px; border-radius:10px;
+    background: conic-gradient(from 180deg, var(--brand), var(--accent), var(--brand-2), var(--brand));
+    box-shadow: 0 0 0 2px rgba(255,255,255,.06) inset, 0 6px 18px rgba(139,92,246,.25);
+  }
+  .logo small{display:block; color:var(--muted); font-weight:600; font-size:11px; margin-top:-4px}
+  nav ul{display:flex; gap:18px; list-style:none; margin:0; padding:0}
+  nav a{padding:8px 10px; border-radius:8px; color:var(--ink)}
+  nav a:hover{background:rgba(255,255,255,.06)}
+  .cta{
+    display:inline-flex; align-items:center; gap:8px;
+    background:linear-gradient(90deg,var(--brand),var(--accent));
+    color:#071a19; font-weight:800; padding:10px 14px; border-radius:10px;
+    box-shadow: var(--shadow); border:0
+  }
+  .burger{display:none; border:1px solid var(--border); background:transparent; color:var(--ink); padding:8px 10px; border-radius:10px}
+  @media (max-width:880px){
+    nav ul{display:none}
+    .burger{display:inline-flex}
+    .nav.open nav ul{
+      display:flex; position:absolute; left:16px; right:16px; top:64px; flex-direction:column;
+      background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:10px
+    }
+  }
+
+  /* Hero */
+  .hero{
+    max-width:var(--maxw); margin:40px auto; padding:30px 20px 10px;
+    display:grid; grid-template-columns: 1.1fr .9fr; gap:28px; align-items:center;
+  }
+  @media (max-width:980px){ .hero{grid-template-columns:1fr} }
+  .h-badge{
+    display:inline-flex; gap:8px; align-items:center;
+    background:rgba(110,231,200,.12); color:#b7f9e7;
+    border:1px solid rgba(110,231,200,.35); padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px
+  }
+  .h-title{font-size:clamp(28px,5.2vw,54px); line-height:1.08; margin:16px 0}
+  .h-sub{color:var(--muted); max-width:56ch}
+  .h-actions{margin-top:18px; display:flex; gap:12px; flex-wrap:wrap}
+  .ghost{
+    border:1px solid var(--border); background:transparent; color:var(--ink); padding:10px 14px; border-radius:10px; font-weight:700
+  }
+
+  .h-card{
+    border:1px solid var(--border); background:linear-gradient(180deg, rgba(23,26,46,.9), rgba(23,26,46,.6));
+    border-radius:var(--radius); padding:18px; position:relative; overflow:hidden;
+  }
+  .orb{
+    position:absolute; right:-60px; bottom:-60px; width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(139,92,246,.55), transparent 60%), 
+               radial-gradient(circle at 70% 70%, rgba(34,211,238,.45), transparent 60%),
+               radial-gradient(circle at 50% 50%, rgba(110,231,200,.6), transparent 62%);
+    filter: blur(3px);
+  }
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .kpi{background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:12px; padding:14px}
+  .kpi h4{margin:0; font-size:13px; color:var(--muted)}
+  .kpi strong{display:block; font-size:24px; margin-top:6px}
+
+  /* Secciones */
+  section{max-width:var(--maxw); margin:60px auto; padding:0 20px}
+  .sec-head{display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:20px}
+  .sec-head h2{margin:0; font-size:clamp(22px,3.4vw,36px)}
+  .sec-head p{color:var(--muted); max-width:60ch; margin:6px 0 0}
+  .cards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+  @media (max-width:980px){ .cards{grid-template-columns:1fr 1fr} }
+  @media (max-width:640px){ .cards{grid-template-columns:1fr} }
+
+  .card{
+    background:linear-gradient(180deg, rgba(23,26,46,.9), rgba(23,26,46,.6));
+    border:1px solid var(--border); border-radius:var(--radius-sm); padding:16px; position:relative; overflow:hidden
+  }
+  .card h3{margin:6px 0 8px}
+  .tag{display:inline-block; font-size:12px; color:#0b2823; background:var(--brand); padding:4px 8px; border-radius:999px; font-weight:800}
+  .chip{display:inline-block; color:var(--muted); border:1px dashed var(--border); padding:3px 8px; border-radius:999px; font-size:12px; margin:4px 4px 0 0}
+  .card:hover{transform: translateY(-2px); transition: transform var(--speed) ease}
+
+  /* Metodología */
+  .steps{display:grid; grid-template-columns: repeat(4,1fr); gap:14px}
+  @media (max-width:980px){ .steps{grid-template-columns: repeat(2,1fr)} }
+  @media (max-width:560px){ .steps{grid-template-columns: 1fr} }
+  .step{background:linear-gradient(180deg, rgba(17,20,38,.9), rgba(17,20,38,.6)); border:1px solid var(--border); border-radius:12px; padding:14px}
+  .numb{
+    width:32px;height:32px;border-radius:10px;
+    background:linear-gradient(90deg,var(--brand-2),var(--accent));
+    display:flex;align-items:center;justify-content:center;font-weight:900;color:#0b0d1a
+  }
+
+  /* Clientes (logos SVG placeholders) */
+  .logos{display:grid; grid-template-columns: repeat(6,1fr); gap:12px}
+  @media (max-width:980px){ .logos{grid-template-columns: repeat(3,1fr)} }
+  @media (max-width:540px){ .logos{grid-template-columns: repeat(2,1fr)} }
+  .logo-box{
+    background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px; padding:16px;
+    display:flex; align-items:center; justify-content:center; min-height:70px
+  }
+  .logo-box svg{opacity:.8}
+
+  /* FAQ */
+  details{
+    background:rgba(255,255,255,.04); border:1px solid var(--border);
+    border-radius:12px; padding:12px 14px; margin-bottom:10px
+  }
+  details[open]{background:rgba(255,255,255,.06)}
+  summary{cursor:pointer;font-weight:800}
+  summary::marker{color:var(--brand)}
+
+  /* Contacto */
+  form{
+    display:grid; grid-template-columns: 1fr 1fr; gap:12px;
+    background:linear-gradient(180deg, rgba(23,26,46,.9), rgba(23,26,46,.6));
+    border:1px solid var(--border); border-radius:var(--radius); padding:16px
+  }
+  form .full{grid-column:1 / -1}
+  label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px}
+  input, textarea, select{
+    width:100%; padding:12px; background:#0c0f20; color:var(--ink);
+    border:1px solid var(--border); border-radius:10px; outline:none
+  }
+  textarea{min-height:120px; resize:vertical}
+  .note{font-size:12px; color:var(--muted)}
+  .toast{
+    position:fixed; right:14px; bottom:14px; padding:10px 14px; border-radius:10px; display:none;
+    background:rgba(20,170,120,.15); color:#bff3e1; border:1px solid rgba(20,170,120,.45); box-shadow:var(--shadow)
+  }
+  .foot{
+    border-top:1px solid var(--border); color:var(--muted); padding:20px; text-align:center; margin-top:50px
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav" id="nav">
+    <a href="#" class="logo" aria-label="Inicio">
+      <span class="logo-badge" aria-hidden="true"></span>
+      <span>Harvey Sanabria <small>Full-Stack Digital Studio</small></span>
+    </a>
+
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#metodologia">Metodología</a></li>
+        <li><a href="#clientes">Clientes</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contacto" class="cta">Hablemos</a></li>
+      </ul>
+    </nav>
+
+    <button class="burger" id="burger" aria-label="Abrir menú">☰</button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div>
+      <span class="h-badge">Bogotá · Colombia — productos con criterio</span>
+      <h1 class="h-title">Diseño y desarrollo de productos digitales con enfoque en impacto real</h1>
+      <p class="h-sub">
+        Construyo experiencias útiles. Prototipo rápido. Mido. Escalo. Pongo los datos por encima del gusto personal.
+        Sitios web, apps, e-learning, videojuegos serios, experiencias inmersivas. Todo con UX/UI claro.
+      </p>
+      <div class="h-actions">
+        <a class="cta" href="#contacto">Agendar reunión</a>
+        <a class="ghost" href="#servicios">Ver capacidades</a>
+      </div>
+    </div>
+
+    <div class="h-card" aria-label="Indicadores del estudio">
+      <div class="grid-2">
+        <div class="kpi"><h4>Proyectos lanzados</h4><strong>120+</strong><small class="note">Educación, gobierno, startups</small></div>
+        <div class="kpi"><h4>Time-to-market</h4><strong>3–6 semanas</strong><small class="note">MVP listo, validación temprana</small></div>
+        <div class="kpi"><h4>NPS promedio</h4><strong>78</strong><small class="note">Feedback post-entrega</small></div>
+        <div class="kpi"><h4>Stack</h4><strong>Web · App · XR</strong><small class="note">JS · Python · WebGL</small></div>
+      </div>
+      <div class="orb" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios">
+    <div class="sec-head">
+      <div>
+        <h2>Servicios</h2>
+        <p>Productos digitales con personalidad. Proceso ágil. Entregables claros. Resultados medibles.</p>
+      </div>
+      <div>
+        <select id="filtro" aria-label="Filtrar servicios">
+          <option value="all">Todos</option>
+          <option value="web">Web/App</option>
+          <option value="edu">E-learning</option>
+          <option value="xr">Metaverso / XR</option>
+          <option value="game">Edugames</option>
+          <option value="ux">UX/UI</option>
+          <option value="nft">NFT / Cripto</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="cards" id="cards">
+      <article class="card" data-type="web">
+        <span class="tag">Web · App</span>
+        <h3>Sitios rápidos, apps livianas</h3>
+        <p>Arquitectura simple, SEO técnico, rendimiento de 90+ en Lighthouse. Entrega CI/CD básica.</p>
+        <div>
+          <span class="chip">SSR/SPA</span><span class="chip">Performance</span><span class="chip">Accesibilidad</span>
+        </div>
+      </article>
+
+      <article class="card" data-type="edu">
+        <span class="tag">E-learning</span>
+        <h3>Academias y cursos que enganchan</h3>
+        <p>Guiones claros, evaluaciones, SCORM, analítica de progreso. Integración LMS.</p>
+        <div><span class="chip">Moodle</span><span class="chip">H5P</span><span class="chip">SCORM</span></div>
+      </article>
+
+      <article class="card" data-type="xr">
+        <span class="tag">Metaverso / XR</span>
+        <h3>Experiencias inmersivas en navegador</h3>
+        <p>Prototipos WebXR sin instalaciones. Casos de marca, educación, eventos.</p>
+        <div><span class="chip">WebXR</span><span class="chip">Three.js</span><span class="chip">UX espacial</span></div>
+      </article>
+
+      <article class="card" data-type="game">
+        <span class="tag">Edugames</span>
+        <h3>Juegos serios, aprendizaje activo</h3>
+        <p>Mecánicas simples, feedback inmediato, métricas de desempeño.</p>
+        <div><span class="chip">Game-loops</span><span class="chip">Progresión</span><span class="chip">Analytics</span></div>
+      </article>
+
+      <article class="card" data-type="ux">
+        <span class="tag">UX/UI</span>
+        <h3>Investigación, wireframes, diseño visual</h3>
+        <p>Entrevistas, prototipos, pruebas con usuarios. Guías de estilo y componentes.</p>
+        <div><span class="chip">Design System</span><span class="chip">Figma</span><span class="chip">A/B</span></div>
+      </article>
+
+      <article class="card" data-type="nft">
+        <span class="tag">NFT / Cripto</span>
+        <h3>Activos digitales con propósito</h3>
+        <p>Smart-contracts básicos, mint en testnet, wallets y utilidades reales.</p>
+        <div><span class="chip">ERC-721</span><span class="chip">Testnets</span><span class="chip">Utilidad</span></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- METODOLOGÍA -->
+  <section id="metodologia">
+    <div class="sec-head">
+      <div>
+        <h2>Metodología</h2>
+        <p>Ritmo ágil. Conversaciones cortas. Demostraciones tempranas. Decisiones guiadas por datos.</p>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="numb">1</div><h3>Descubrir</h3><p>Objetivos, usuarios, restricciones. Claridad primero.</p></div>
+      <div class="step"><div class="numb">2</div><h3>Prototipar</h3><p>Wireframes, flujos, demo navegable. Feedback real.</p></div>
+      <div class="step"><div class="numb">3</div><h3>Construir</h3><p>Backlog fino, sprints cortos, QA continuo.</p></div>
+      <div class="step"><div class="numb">4</div><h3>Medir</h3><p>Métricas clave, mejoras, roadmap de evolución.</p></div>
+    </div>
+  </section>
+
+  <!-- CLIENTES -->
+  <section id="clientes">
+    <div class="sec-head">
+      <div>
+        <h2>Organizaciones aliadas</h2>
+        <p>Academia, sector público, emprendimientos. Proyectos útiles, resultados visibles.</p>
+      </div>
+    </div>
+
+    <div class="logos" aria-label="Logos de clientes (placeholders)">
+      <!-- 6 placeholders SVG -->
+      <div class="logo-box"><svg width="120" height="28" viewBox="0 0 120 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="28" rx="6" fill="#1e2343"/><text x="10" y="18" fill="#9aa3c7" font-size="12" font-weight="700">Universidad</text></svg></div>
+      <div class="logo-box"><svg width="120" height="28" viewBox="0 0 120 28" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="28" rx="6" fill="#1e2343"/><text x="10" y="18" fill="#9aa3c7" font-size="12" font-weight="700">SENA</text></svg></div>
+      <div class="logo-box"><svg width="120" height="28" viewBox="0 0 120 28" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="28" rx="6" fill="#1e2343"/><text x="10" y="18" fill="#9aa3c7" font-size="12" font-weight="700">Gobierno</text></svg></div>
+      <div class="logo-box"><svg width="120" height="28" viewBox="0 0 120 28" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="28" rx="6" fill="#1e2343"/><text x="10" y="18" fill="#9aa3c7" font-size="12" font-weight="700">Startup</text></svg></div>
+      <div class="logo-box"><svg width="120" height="28" viewBox="0 0 120 28" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="28" rx="6" fill="#1e2343"/><text x="10" y="18" fill="#9aa3c7" font-size="12" font-weight="700">ONG</text></svg></div>
+      <div class="logo-box"><svg width="120" height="28" viewBox="0 0 120 28" xmlns="http://www.w3.org/2000/svg"><rect width="120" height="28" rx="6" fill="#1e2343"/><text x="10" y="18" fill="#9aa3c7" font-size="12" font-weight="700">EdTech</text></svg></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="sec-head">
+      <div><h2>Preguntas frecuentes</h2><p>Respuestas directas. Sin rodeos.</p></div>
+    </div>
+
+    <details>
+      <summary>¿Cuál es el alcance típico de un MVP?</summary>
+      <p>Una función clave bien resuelta, flujo completo, medición básica. Nada de adornos innecesarios.</p>
+    </details>
+    <details>
+      <summary>¿Cómo manejo plazos ajustados?</summary>
+      <p>Backlog mínimo, entregas semanales, priorización estricta. Transparencia total.</p>
+    </details>
+    <details>
+      <summary>¿Qué pasa con soporte post-lanzamiento?</summary>
+      <p>Correcciones críticas, mejoras planificadas, documentación y handoff limpio.</p>
+    </details>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <div class="sec-head">
+      <div>
+        <h2>Contacto</h2>
+        <p>Cuéntame el reto. Te propongo ruta, tiempos, entregables.</p>
+      </div>
+    </div>
+
+    <form id="form">
+      <div>
+        <label for="nombre">Nombre</label>
+        <input id="nombre" name="nombre" placeholder="Tu nombre" required />
+      </div>
+      <div>
+        <label for="correo">Correo</label>
+        <input id="correo" name="correo" type="email" placeholder="tucorreo@dominio.com" required />
+      </div>
+      <div class="full">
+        <label for="tipo">Tipo de proyecto</label>
+        <select id="tipo" name="tipo" required>
+          <option value="">Selecciona una opción</option>
+          <option>Web/App</option>
+          <option>E-learning</option>
+          <option>Metaverso / XR</option>
+          <option>Edugame</option>
+          <option>UX/UI</option>
+          <option>NFT / Cripto</option>
+        </select>
+      </div>
+      <div class="full">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Resumen del reto, objetivo, plazo estimado…" required></textarea>
+      </div>
+      <div>
+        <button class="cta" type="submit">Enviar</button>
+      </div>
+      <div>
+        <button class="ghost" type="button" id="demo">Autocompletar demo</button>
+      </div>
+      <div class="full note">También puedes escribir a <a href="mailto:contacto@harveysanabria.studio">contacto@harveysanabria.studio</a> · WhatsApp +57 317 312 0288</div>
+    </form>
+  </section>
+</main>
+
+<footer class="foot">
+  © <span id="year"></span> Harvey Sanabria — Full-Stack Digital Studio · Bogotá, Colombia
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Gracias. Responderé pronto.</div>
+
+<script>
+  // Utilidades pequeñas
+  const $ = (s, ctx=document)=>ctx.querySelector(s);
+  const $$ = (s, ctx=document)=>[...ctx.querySelectorAll(s)];
+
+  // Año dinámico
+  $('#year').textContent = new Date().getFullYear();
+
+  // Menú móvil
+  $('#burger').addEventListener('click', () => {
+    const nav = $('#nav');
+    nav.classList.toggle('open');
+    $('#burger').setAttribute('aria-expanded', nav.classList.contains('open'));
+  });
+
+  // Scroll suave
+  $$('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click', e=>{
+      const id = a.getAttribute('href');
+      if(id.length>1){
+        e.preventDefault();
+        document.querySelector(id).scrollIntoView({behavior:'smooth', block:'start'});
+        $('#nav').classList.remove('open');
+      }
+    });
+  });
+
+  // Filtro de servicios
+  $('#filtro').addEventListener('change', e=>{
+    const sel = e.target.value;
+    $$('#cards .card').forEach(card=>{
+      const ok = sel === 'all' || card.dataset.type === sel;
+      card.style.display = ok ? '' : 'none';
+    });
+  });
+
+  // Formulario con validación básica (solo demo)
+  const toast = $('#toast');
+  $('#form').addEventListener('submit', e=>{
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(e.target).entries());
+
+    // Validaciones mínimas
+    const emailOk = String(data.correo||'').includes('@');
+    const msgOk = (data.mensaje||'').trim().length >= 12;
+
+    if(!emailOk || !msgOk){
+      toast.style.display='block';
+      toast.textContent = 'Revisa correo y mensaje (mín. 12 caracteres).';
+      toast.style.background = 'rgba(251,113,133,.12)';
+      toast.style.borderColor = 'rgba(251,113,133,.45)';
+      setTimeout(()=>toast.style.display='none', 2400);
+      return;
+    }
+
+    // Simula envío local
+    console.log('Solicitud de contacto:', data);
+    toast.style.display='block';
+    toast.textContent='Gracias. Responderé pronto.';
+    toast.style.background = 'rgba(20,170,120,.15)';
+    toast.style.borderColor = 'rgba(20,170,120,.45)';
+    e.target.reset();
+    setTimeout(()=>toast.style.display='none', 2200);
+  });
+
+  // Autocompletar demo
+  $('#demo').addEventListener('click', ()=>{
+    $('#nombre').value = 'María R.';
+    $('#correo').value = 'maria@example.com';
+    $('#tipo').value = 'E-learning';
+    $('#mensaje').value = 'Necesitamos un micro-curso con SCORM, evaluación y dashboard de progreso. Lanzamiento en 4 semanas.';
+  });
+</script>
+</body>
+</html>
